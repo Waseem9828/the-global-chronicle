@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE GLOBAL CHRONICLE — International Broadsheet & Autonomous AI Wire</title>
+  <meta name="description" content="Classic broadsheet newspaper covering World, Business, Technology, Science, Sports, and Culture with continuous 24/7 Autonomous AI News Desk.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            paper: {
+              bg: '#f8f6f0',
+              card: '#ffffff',
+              border: '#dcd7ca',
+              ink: '#121212',
+              muted: '#5a554a',
+              burgundy: '#8a151b',
+              navy: '#1b2a4a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Broadsheet Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-[#f8f6f0] text-[#121212] font-body min-h-screen selection:bg-[#8a151b] selection:text-white">
+
+  <!-- 1. TOP UTILITY STRIP -->
+  <header class="border-b border-[#dcd7ca] bg-[#f1ede2] text-xs font-mono-code px-4 py-1.5 select-none">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-y-2">
+      
+      <!-- Left: Weather & Clock -->
+      <div class="flex items-center space-x-3 text-[#5a554a]">
+        <span class="inline-flex items-center space-x-1.5 bg-[#8a151b]/10 text-[#8a151b] border border-[#8a151b]/30 px-2 py-0.5 rounded text-[11px] font-bold">
+          <span class="w-2 h-2 rounded-full bg-[#8a151b] live-dot"></span>
+          <span>LATE CITY EDITION</span>
+        </span>
+        <span class="hidden sm:inline">•</span>
+        <span id="header-live-clock" class="text-[11px]">Syncing date...</span>
+      </div>
+
+      <!-- Center: Weather Widget -->
+      <div id="weather-widget" class="text-xs text-[#383838]">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Right: AI Agent Pill, Bookmarks, Theme, Write -->
+      <div class="flex items-center space-x-3">
+        <!-- AI Agent Pill -->
+        <button id="agent-header-chip" class="flex items-center space-x-1.5 bg-white border border-[#dcd7ca] hover:border-[#8a151b] text-[#121212] px-2.5 py-0.5 rounded text-[11px] transition shadow-xs cursor-pointer">
+          <span class="w-2 h-2 rounded-full bg-emerald-600 mr-1"></span>
+          <span>AI AGENT: <strong>ACTIVE</strong></span>
+        </button>
+
+        <!-- AI Studio Trigger -->
+        <button id="open-agent-modal-btn" class="px-2 py-0.5 bg-[#121212] hover:bg-[#333333] text-white rounded text-[11px] font-bold uppercase tracking-wider transition">
+          🤖 AI Bureau
+        </button>
+
+        <!-- Bookmarks -->
+        <button id="open-bookmarks-btn" class="relative p-1 text-[#5a554a] hover:text-[#121212] transition" title="Saved Articles">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+          <span id="bookmark-count-badge" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#8a151b] text-white text-[9px] font-bold rounded-full flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="p-1 text-[#5a554a] hover:text-[#121212] transition" title="Toggle Sepia/Dark Reading Mode">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </button>
+
+        <!-- Manual Publish Button -->
+        <button id="open-publish-modal-btn" class="px-2.5 py-0.5 bg-[#8a151b] hover:bg-[#701015] text-white font-bold rounded text-[11px] tracking-wider uppercase transition">
+          + Write Story
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- 2. NEWSPAPER FINANCIAL & MARKET TICKER -->
+  <div class="bg-[#121212] text-white py-1 text-xs font-mono-code overflow-hidden border-b border-[#333333]">
+    <div class="flex items-center">
+      <div class="bg-[#8a151b] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-0.5 z-10 whitespace-nowrap shadow">
+        MARKETS DESK
+      </div>
+      <div class="overflow-hidden whitespace-nowrap w-full">
+        <div id="market-ticker-content" class="animate-ticker">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. AUTHENTIC NEWSPAPER MASTHEAD -->
+  <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+    
+    <!-- Top Earboxes & Motto -->
+    <div class="grid grid-cols-1 md:grid-cols-12 items-center gap-4 pb-4 border-b border-[#dcd7ca]">
+      <div class="md:col-span-3 text-xs font-mono-code text-[#5a554a] text-center md:text-left">
+        <p class="font-bold text-[#121212]">PRICE: $2.50 (USD)</p>
+        <p class="text-[11px]">CIRCULATION: 1,450,000 DAILY</p>
+      </div>
+
+      <div class="md:col-span-6 text-center">
+        <p class="text-[11px] font-mono-code uppercase tracking-widest text-[#8a151b] font-bold">
+          "ALL THE NEWS UNBIASED & UNFILTERED ACROSS SEVEN CONTINENTS"
+        </p>
+      </div>
+
+      <div class="md:col-span-3 text-xs font-mono-code text-[#5a554a] text-center md:text-right">
+        <p class="font-bold text-[#121212]">VERIFIED INTERNATIONAL WIRE</p>
+        <p class="text-[11px] text-[#8a151b] font-semibold">24/7 AUTONOMOUS AI DESK</p>
+      </div>
+    </div>
+
+    <!-- Grand Broadsheet Masthead Title -->
+    <div class="text-center py-6">
+      <a href="#" class="inline-block group">
+        <h1 class="font-masthead text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#121212] tracking-normal leading-tight hover:opacity-90 transition">
+          The Global Chronicle
+        </h1>
+      </a>
+      <p class="font-headline italic text-sm sm:text-base text-[#5a554a] mt-1">
+        Incorporating The International Herald, Daily Wire Gazette & Sovereign Intelligence
+      </p>
+    </div>
+
+    <!-- Classic Double Horizontal Border Date Strip -->
+    <div class="border-t-4 border-b border-[#121212] py-1.5 my-2">
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs font-mono-code text-[#121212] uppercase tracking-wider px-2 gap-2">
+        <span class="font-bold">VOL. CLXXIV No. 60,192</span>
+        <span class="font-bold text-center">GENEVA • NEW YORK • LONDON • TOKYO • SINGAPORE</span>
+        <span class="font-bold" id="broadsheet-date">OCTOBER 2026 EDITION</span>
+      </div>
+    </div>
+
+    <!-- Category Ribbon Navigation Bar -->
+    <nav class="border-b-2 border-[#121212] py-2 bg-transparent">
+      <div class="flex items-center justify-between gap-4">
+        
+        <!-- Category Pills (Newspaper style tabs) -->
+        <div id="category-pills" class="flex items-center space-x-1 sm:space-x-3 overflow-x-auto no-scrollbar py-1">
+          <!-- Populated by app.js: All, World, Business, Technology, Science, Sports, Culture -->
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative shrink-0 w-44 sm:w-64">
+          <input 
+            id="global-search-input" 
+            type="text" 
+            placeholder="Search the archive..." 
+            class="w-full bg-white border border-[#dcd7ca] rounded px-3 py-1 text-xs text-[#121212] placeholder-[#8c877c] focus:outline-none focus:border-[#8a151b] font-mono-code"
+          />
+          <button id="search-clear-btn" class="hidden absolute right-2 top-1 text-[#8c877c] hover:text-[#121212]">
+            ×
+          </button>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Breaking Wire Alert Banner -->
+    <div class="border-b border-[#dcd7ca] py-2 text-xs font-mono-code flex items-center space-x-2 text-[#8a151b] bg-[#f2ede0] px-3 mt-2 rounded">
+      <span class="font-bold uppercase tracking-wider flex items-center space-x-1 shrink-0">
+        <span class="w-2 h-2 rounded-full bg-[#8a151b] live-dot"></span>
+        <span>BULLETIN:</span>
+      </span>
+      <p class="text-[#121212] truncate font-medium">
+        Autonomous AI Wire actively monitoring Reuters, BBC, AP, and global correspondents. Next automated print scheduled in 2h.
+      </p>
+      <span id="results-count" class="ml-auto shrink-0 font-bold text-[#5a554a] text-[11px]"></span>
+    </div>
+
+  </header>
+
+  <!-- 4. MAIN BROADSHEET EDITORIAL GRID -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+    
+    <!-- Hero / Lead Front-Page Story (Broadsheet Layout) -->
+    <section id="hero-lead-section">
+      <!-- Injected by app.js -->
+    </section>
+
+    <div class="border-t-2 border-[#121212] my-6"></div>
+
+    <!-- Multi-Column Editorial Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Main Articles Columns (8 cols) -->
+      <section class="lg:col-span-8 space-y-6">
+        <div class="border-b-2 border-[#121212] pb-1 flex items-center justify-between">
+          <h2 class="font-headline text-2xl font-black uppercase tracking-tight text-[#121212]">
+            General Dispatches & Wire Reports
+          </h2>
+          <button onclick="newsApp.openAgentModal()" class="text-xs font-mono-code text-[#8a151b] hover:underline font-bold">
+            ⚡ Trigger AI Scanner
+          </button>
+        </div>
+
+        <div id="articles-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </section>
+
+      <!-- Sidebar Columns (4 cols): Trending, Wire Bureau, Sections Index -->
+      <aside class="lg:col-span-4 space-y-8 lg:pl-6 lg:border-l border-[#dcd7ca]">
+        
+        <!-- Trending Stories Rail -->
+        <div class="bg-white border border-[#dcd7ca] p-5 rounded-xs shadow-xs">
+          <div class="border-b-2 border-[#121212] pb-2 mb-4">
+            <h3 class="font-headline font-black text-lg uppercase tracking-tight text-[#121212] flex items-center justify-between">
+              <span>Today's Most Read</span>
+              <span class="text-xs font-mono-code text-[#8a151b] font-normal">RANKING</span>
+            </h3>
+          </div>
+
+          <div id="trending-sidebar" class="space-y-4">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- AI Bureau Live Teletype Card -->
+        <div class="bg-[#f2ede0] border-2 border-[#121212] p-5 relative">
+          <div class="flex items-center justify-between border-b border-[#dcd7ca] pb-2 mb-3">
+            <span class="text-[11px] font-mono-code uppercase font-bold text-[#8a151b] flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#8a151b] live-dot"></span>
+              <span>TELETYPE AUTOMATION</span>
+            </span>
+            <span class="text-[10px] font-mono-code text-[#5a554a]">EST. 2026</span>
+          </div>
+
+          <h4 class="font-headline font-bold text-lg text-[#121212] mb-1">
+            The Autonomous Wire Bureau
+          </h4>
+          <p class="text-xs text-[#5a554a] font-body leading-relaxed mb-4">
+            Our autonomous AI journalistic agent sweeps international wire feeds, assesses breaking significance, and drafts authoritative reports in broadsheet prose.
+          </p>
+
+          <button onclick="newsApp.openAgentModal()" class="w-full py-2 bg-[#121212] hover:bg-[#333333] text-white font-mono-code font-bold text-xs uppercase tracking-wider transition">
+            ⚡ Open Wire Mission Control
+          </button>
+        </div>
+
+        <!-- Sections Index & Subscription -->
+        <div class="bg-white border border-[#dcd7ca] p-5">
+          <h4 class="font-headline font-black text-sm uppercase text-[#121212] border-b border-[#121212] pb-1.5 mb-3">
+            Daily Delivery & Morning Dispatch
+          </h4>
+          <p class="text-xs text-[#5a554a] font-body leading-relaxed mb-4">
+            Receive the full facsimile edition every morning at dawn directly to your personal mailbox.
+          </p>
+
+          <form onsubmit="event.preventDefault(); newsApp.showToast('Subscribed to The Chronicle Morning Dispatch!'); this.reset();" class="space-y-2">
+            <input 
+              type="email" 
+              placeholder="editor@newspaper.org" 
+              class="w-full bg-[#f8f6f0] border border-[#dcd7ca] rounded px-3 py-1.5 text-xs text-[#121212] placeholder-[#8c877c] font-mono-code focus:outline-none focus:border-[#8a151b]"
+              required 
+            />
+            <button type="submit" class="w-full py-2 bg-[#8a151b] hover:bg-[#701015] text-white font-mono-code font-bold text-xs uppercase tracking-wider rounded transition">
+              Subscribe Free
+            </button>
+          </form>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- 5. ARTICLE READER MODAL (BROADSHEET READING EXPERIENCE) -->
+  <div id="article-reader-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-2 sm:p-4 lg:p-6">
+    <div id="article-modal-content" class="bg-[#f8f6f0] border-2 border-[#121212] rounded-xs w-full max-w-4xl max-h-[92vh] overflow-hidden shadow-2xl relative text-[#121212]">
+      <!-- Populated dynamically when article opened -->
+    </div>
+  </div>
+
+  <!-- 6. AI AGENT MISSION CONTROL MODAL -->
+  <div id="agent-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#f8f6f0] border-2 border-[#121212] w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-6 text-[#121212]">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b-2 border-[#121212] pb-3">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 live-dot"></span>
+            <span class="text-xs font-mono-code text-[#8a151b] font-bold uppercase tracking-wider">AI AUTOMATED TELETYPE WIRE</span>
+          </div>
+          <h2 class="text-2xl font-headline font-black text-[#121212] mt-0.5">Wire Bureau Control Room</h2>
+        </div>
+        <button id="close-agent-modal-btn" class="p-1.5 text-[#5a554a] hover:text-[#121212] border border-[#dcd7ca] bg-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Telemetry Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="p-4 bg-white border border-[#dcd7ca]">
+          <span class="text-[10px] font-mono-code text-[#5a554a] uppercase">Stories Printed</span>
+          <p id="agent-stat-total" class="text-2xl font-bold font-mono-code text-[#8a151b] mt-1">0</p>
+          <span class="text-[10px] text-[#8c877c] font-mono-code">Total dispatches generated</span>
+        </div>
+
+        <div class="p-4 bg-white border border-[#dcd7ca]">
+          <span class="text-[10px] font-mono-code text-[#5a554a] uppercase">Printing Schedule</span>
+          <p id="agent-stat-interval" class="text-2xl font-bold font-mono-code text-[#121212] mt-1">Every 3h</p>
+          <span class="text-[10px] text-[#8c877c] font-mono-code">24/7 autonomous wire</span>
+        </div>
+
+        <div class="p-4 bg-white border border-[#dcd7ca]">
+          <span class="text-[10px] font-mono-code text-[#5a554a] uppercase">Next Wire Cycle</span>
+          <p id="agent-stat-next" class="text-2xl font-bold font-mono-code text-emerald-700 mt-1">Pending</p>
+          <span class="text-[10px] text-[#8c877c] font-mono-code">Next sweep scheduled</span>
+        </div>
+      </div>
+
+      <!-- Immediate Trigger Card -->
+      <div class="p-5 bg-[#f1ede2] border border-[#dcd7ca] space-y-3">
+        <div>
+          <h3 class="text-base font-headline font-black text-[#121212] flex items-center space-x-2">
+            <span>⚡ Issue Breaking Wire Extra Edition</span>
+          </h3>
+          <p class="text-xs text-[#5a554a] mt-0.5">
+            Instruct the teletype agent to scour live international feeds now, write a full broadsheet article, and print it to the front page immediately.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <select id="agent-trigger-category" class="bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] font-mono-code focus:outline-none focus:border-[#8a151b]">
+            <option value="">Any Trending Wire</option>
+            <option value="Entertainment">Entertainment & Cinema</option>
+            <option value="World">World & Diplomacy</option>
+            <option value="Business">Business & Finance</option>
+            <option value="Technology">Technology & Science</option>
+            <option value="Science">Science & Climate</option>
+            <option value="Sports">Sports</option>
+            <option value="Culture">Arts & Culture</option>
+          </select>
+
+          <button id="trigger-agent-now-btn" class="flex-1 py-2 px-5 bg-[#8a151b] hover:bg-[#701015] text-white font-bold uppercase tracking-wider text-xs font-mono-code transition">
+            <span>⚡ Sweep Wire & Print Story Now</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Agent-Reach Multi-Platform Intelligence (Zero API Fees) -->
+      <div class="p-5 bg-white border-2 border-[#121212] space-y-4 shadow-xs">
+        <div class="border-b border-[#dcd7ca] pb-2">
+          <div class="flex items-center space-x-2">
+            <span class="text-sm">👁️</span>
+            <h3 class="font-headline font-black text-base text-[#121212] uppercase tracking-tight">
+              Agent-Reach: Eyes on the Entire Internet (Zero API Fees)
+            </h3>
+          </div>
+          <p class="text-xs text-[#5a554a] font-body mt-0.5">
+            Inspired by <a href="https://github.com/Panniantong/Agent-Reach" target="_blank" class="text-[#8a151b] underline font-bold">Panniantong/Agent-Reach</a>. Sweep social platforms and ingest any web page or paywall article into a full broadsheet dispatch using Jina Reader.
+          </p>
+        </div>
+
+        <!-- Quick Platform Sweepers -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button id="reach-github-btn" class="p-3 border border-[#dcd7ca] hover:border-[#121212] bg-[#f8f6f0] hover:bg-white text-left transition flex items-center justify-between">
+            <div>
+              <p class="font-mono-code font-bold text-xs text-[#121212]">🐙 Sweep GitHub Trending AI</p>
+              <p class="text-[11px] text-[#5a554a] font-body">Extract top starred open-source release</p>
+            </div>
+            <span class="text-xs font-mono-code text-[#8a151b] font-bold">Run →</span>
+          </button>
+
+          <button id="reach-reddit-btn" class="p-3 border border-[#dcd7ca] hover:border-[#121212] bg-[#f8f6f0] hover:bg-white text-left transition flex items-center justify-between">
+            <div>
+              <p class="font-mono-code font-bold text-xs text-[#121212]">📱 Sweep Reddit Viral Wire</p>
+              <p class="text-[11px] text-[#5a554a] font-body">Extract top viral discussions in /r/entertainment</p>
+            </div>
+            <span class="text-xs font-mono-code text-[#8a151b] font-bold">Run →</span>
+          </button>
+        </div>
+
+        <!-- Direct Web URL Ingestion -->
+        <div class="pt-2 border-t border-[#dcd7ca]">
+          <label class="block text-xs font-mono-code font-bold uppercase text-[#121212] mb-1.5">
+            🔗 Ingest Any Web URL (Articles, X/Twitter Threads, GitHub, YouTube)
+          </label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input 
+              id="reach-url-input" 
+              type="url" 
+              placeholder="Paste any article link (e.g. https://www.theverge.com/... or https://github.com/...)" 
+              class="flex-1 bg-[#f8f6f0] border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] font-mono-code focus:outline-none focus:border-[#8a151b]"
+            />
+            <button id="reach-url-btn" class="px-5 py-2 bg-[#121212] hover:bg-[#8a151b] text-white font-mono-code font-bold text-xs uppercase tracking-wider transition">
+              ⚡ Ingest via Jina Reader & Print
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Teletype Terminal Logs -->
+      <div>
+        <h4 class="text-xs font-mono-code uppercase font-bold text-[#121212] mb-1.5 flex items-center space-x-2">
+          <span>📟 Teletype Wire Telemetry</span>
+        </h4>
+        <div id="agent-logs-container" class="bg-[#121212] text-white border border-[#333333] p-4 max-h-48 overflow-y-auto space-y-1.5 font-mono-code text-[11px]">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="pt-4 border-t border-[#dcd7ca]">
+        <h4 class="text-xs font-mono-code uppercase font-bold text-[#121212] mb-3">Bureau Configuration</h4>
+        
+        <form id="agent-settings-form" class="space-y-4 text-xs font-mono-code">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[#121212] font-bold mb-1 uppercase">24/7 Wire</label>
+              <div class="flex items-center space-x-2 mt-1.5">
+                <input id="agent-setting-enabled" type="checkbox" checked class="w-4 h-4 rounded text-[#8a151b]" />
+                <span class="text-xs text-[#121212]">Continuous</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[#121212] font-bold mb-1 uppercase">Frequency</label>
+              <select id="agent-setting-interval" class="w-full bg-white border border-[#dcd7ca] px-2.5 py-1.5 text-xs text-[#121212]">
+                <option value="1">Every 1 Hour</option>
+                <option value="2">Every 2 Hours</option>
+                <option value="3" selected>Every 3 Hours</option>
+                <option value="6">Every 6 Hours</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[#121212] font-bold mb-1 uppercase">Editorial AI Engine</label>
+              <select id="agent-setting-provider" class="w-full bg-white border border-[#dcd7ca] px-2.5 py-1.5 text-xs text-[#121212]">
+                <option value="built-in" selected>Built-In Broadsheet Synthesizer</option>
+                <option value="gemini">Google Gemini API</option>
+                <option value="openai">OpenAI (GPT-4o-mini)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[#121212] font-bold mb-1 uppercase">API Key (Optional for Gemini / OpenAI)</label>
+            <input id="agent-setting-key" type="password" placeholder="Leave blank to use zero-config built-in engine" class="w-full bg-white border border-[#dcd7ca] px-3 py-1.5 text-xs text-[#121212]" />
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" class="px-4 py-1.5 bg-[#121212] hover:bg-[#333333] text-white font-bold tracking-wider uppercase transition">
+              Save Bureau Settings
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7. MANUAL PUBLISH MODAL -->
+  <div id="publish-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-[#f8f6f0] border-2 border-[#121212] w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+      <div class="flex items-center justify-between border-b-2 border-[#121212] pb-3 mb-4">
+        <div>
+          <span class="text-xs font-mono-code text-[#8a151b] font-bold uppercase">EDITORIAL ROOM</span>
+          <h2 class="text-2xl font-headline font-black text-[#121212]">Draft Column or Dispatch</h2>
+        </div>
+        <button id="close-publish-modal-btn" class="p-1.5 text-[#5a554a] hover:text-[#121212] border border-[#dcd7ca] bg-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <form id="publish-article-form" class="space-y-4 text-xs font-mono-code">
+        <div>
+          <label class="block text-[#121212] font-bold mb-1 uppercase">Headline *</label>
+          <input id="post-title" type="text" required placeholder="e.g. Historic Climate Accord Ratified by 140 Nations" class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-sm text-[#121212] focus:outline-none focus:border-[#8a151b] font-headline font-bold" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[#121212] font-bold mb-1 uppercase">Section *</label>
+            <select id="post-category" class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b]">
+              <option value="World">World Affairs</option>
+              <option value="Business">Business & Finance</option>
+              <option value="Technology">Technology</option>
+              <option value="Science">Science & Climate</option>
+              <option value="Sports">Sports</option>
+              <option value="Culture">Arts & Culture</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[#121212] font-bold mb-1 uppercase">Byline / Author</label>
+            <input id="post-author" type="text" placeholder="e.g. Amira Al-Mansoor, Staff Correspondent" class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b]" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-[#121212] font-bold mb-1 uppercase">Photograph URL</label>
+            <input id="post-cover" type="url" placeholder="https://images.unsplash.com/..." class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b]" />
+          </div>
+
+          <div>
+            <label class="block text-[#121212] font-bold mb-1 uppercase">Estimated Reading Time</label>
+            <input id="post-readtime" type="text" placeholder="e.g. 5 min read" value="5 min read" class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[#121212] font-bold mb-1 uppercase">Lead Paragraph / Summary *</label>
+          <textarea id="post-summary" rows="2" required placeholder="Opening summary sentence setting the scene..." class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b] font-body"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-[#121212] font-bold mb-1 uppercase">Keywords / Tags</label>
+          <input id="post-tags" type="text" placeholder="Diplomacy, Treaty, Geneva, Climate" class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-xs text-[#121212] focus:outline-none focus:border-[#8a151b]" />
+        </div>
+
+        <div>
+          <label class="block text-[#121212] font-bold mb-1 uppercase">Full Broadsheet Body *</label>
+          <textarea id="post-content" rows="6" required placeholder="Write the complete journalistic column. Separate paragraphs with blank lines." class="w-full bg-white border border-[#dcd7ca] px-3 py-2 text-sm text-[#121212] focus:outline-none focus:border-[#8a151b] font-body"></textarea>
+        </div>
+
+        <div class="pt-3 flex justify-end space-x-3">
+          <button type="button" onclick="document.getElementById('publish-modal').classList.add('hidden')" class="px-4 py-2 bg-[#dcd7ca] text-[#121212] hover:bg-[#c9c4b7]">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 bg-[#8a151b] hover:bg-[#701015] text-white font-bold uppercase tracking-wider">
+            Print to Front Page
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. BOOKMARKS DRAWER -->
+  <div id="bookmarks-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity"></div>
+  <aside id="bookmarks-drawer" class="fixed top-0 right-0 w-full sm:w-96 h-full bg-[#f8f6f0] border-l-2 border-[#121212] z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+    <div class="p-5 border-b-2 border-[#121212] flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5 text-[#8a151b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+        <h3 class="font-headline font-black text-lg text-[#121212] uppercase">Saved Dispatches</h3>
+      </div>
+      <button id="close-bookmarks-btn" class="p-1 text-[#5a554a] hover:text-[#121212]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <div id="bookmarks-list-container" class="flex-1 overflow-y-auto p-5 space-y-3">
+      <!-- Populated dynamically by app.js -->
+    </div>
+
+    <div class="p-4 border-t border-[#dcd7ca] text-center font-mono-code text-[11px] text-[#5a554a]">
+      Saved to your personal offline reader
+    </div>
+  </aside>
+
+  <!-- 9. TOAST NOTIFICATION -->
+  <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-[#121212] text-white px-5 py-3 border-l-4 border-[#8a151b] shadow-2xl flex items-center space-x-3 pointer-events-none font-mono-code text-xs">
+    <span id="toast-message">Notice issued</span>
+  </div>
+
+  <!-- 10. BROADSHEET NEWSPAPER FOOTER -->
+  <footer class="border-t-4 border-b border-[#121212] bg-[#f1ede2] py-12 text-xs text-[#5a554a] mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-[#dcd7ca]">
+        <!-- Col 1: Masthead & History -->
+        <div class="space-y-3">
+          <h2 class="font-masthead text-2xl font-bold text-[#121212]">
+            The Global Chronicle
+          </h2>
+          <p class="font-body leading-relaxed text-[#383838]">
+            Founded as an independent international broadsheet journal. Dedicated to truth, editorial integrity, and continuous teletype reporting from every sovereign corner of the globe.
+          </p>
+          <p class="font-mono-code text-[11px] text-[#8a151b] font-bold">
+            MEMBER: INTERNATIONAL PRESS ALLIANCE
+          </p>
+        </div>
+
+        <!-- Col 2: Sections -->
+        <div>
+          <h4 class="font-headline uppercase font-bold text-[#121212] mb-3 text-sm">Sections & Desks</h4>
+          <ul class="space-y-1.5 font-body text-sm text-[#383838]">
+            <li><a href="#" class="hover:underline">World Diplomacy & Statecraft</a></li>
+            <li><a href="#" class="hover:underline">Global Finance & Macroeconomics</a></li>
+            <li><a href="#" class="hover:underline">Technology, AI & Cyber Wire</a></li>
+            <li><a href="#" class="hover:underline">Planetary Science & Astronomy</a></li>
+            <li><a href="#" class="hover:underline">International Athletics & Football</a></li>
+            <li><a href="#" class="hover:underline">Cultural Review & Literature</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Principles -->
+        <div>
+          <h4 class="font-headline uppercase font-bold text-[#121212] mb-3 text-sm">Editorial Standards</h4>
+          <ul class="space-y-1.5 font-body text-sm text-[#383838]">
+            <li><a href="#" class="hover:underline">Code of Journalistic Conduct</a></li>
+            <li><a href="#" class="hover:underline">Autonomous AI Transparency Clause</a></li>
+            <li><a href="#" class="hover:underline">Corrections & Errata Archive</a></li>
+            <li><a href="#" class="hover:underline">Letters to the Editor</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Print Bureaus -->
+        <div>
+          <h4 class="font-headline uppercase font-bold text-[#121212] mb-3 text-sm">Print Presses & Bureaus</h4>
+          <p class="font-mono-code text-[11px] leading-relaxed text-[#383838] mb-3">
+            Geneva • New York • London • Tokyo • Singapore • Frankfurt • Nairobi
+          </p>
+          <div class="p-3 bg-white border border-[#dcd7ca] text-[11px] font-mono-code">
+            <span class="text-emerald-700 font-bold">● ROTARY TELETYPE ACTIVE</span>
+            <p class="text-[#5a554a] mt-0.5">Automated wire scanner operating 24/7</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between font-mono-code text-[11px] text-[#5a554a] gap-2">
+        <p>© 2026 THE GLOBAL CHRONICLE PUBLISHING CO. ALL RIGHTS RESERVED.</p>
+        <p>PRINTED ON UNBLEACHED DIGITAL PARCHMENT • EST. 2026</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

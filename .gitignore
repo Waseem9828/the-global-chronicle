@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Cloned reference repos
+agent-reach-repo/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+*.log

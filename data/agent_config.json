@@ -1,0 +1,155 @@
+{
+  "autoPostEnabled": true,
+  "intervalHours": 3,
+  "postsPerDay": 8,
+  "lastRun": "2026-10-05T06:20:04.024Z",
+  "nextRun": "2026-10-05T09:45:21.265Z",
+  "totalGenerated": 4,
+  "aiProvider": "built-in",
+  "apiKey": "",
+  "categories": [
+    "World",
+    "Business",
+    "Technology",
+    "Science",
+    "Sports",
+    "Culture"
+  ],
+  "logs": [
+    {
+      "timestamp": "2026-10-05T06:45:21.274Z",
+      "type": "SYSTEM",
+      "message": "Background AI Wire Agent started. Scheduled: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-05T06:27:55.945Z",
+      "type": "SYSTEM",
+      "message": "Background AI Wire Agent started. Scheduled: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-05T06:20:04.060Z",
+      "type": "PUBLISHED",
+      "message": "Printed to Front Page: \"‘Lanterns’ Team Breaks Down Finale’s Emotional Gamble, Hal Jordan’s Ultimate Fate and John Stewart’s Future\" (SEO Score: 96/100)"
+    },
+    {
+      "timestamp": "2026-10-05T06:20:03.730Z",
+      "type": "AI_WRITER",
+      "message": "Drafting complete broadsheet article & Schema.org SEO using built-in engine..."
+    },
+    {
+      "timestamp": "2026-10-05T06:20:03.693Z",
+      "type": "DISCOVERY",
+      "message": "Selected Trending Story: \"‘Lanterns’ Team Breaks Down Finale’s Emotional Gamble, Hal Jordan’s Ultimate Fate and John Stewart’s Future\" [Entertainment] (Velocity: 99% from The Hollywood Reporter)"
+    },
+    {
+      "timestamp": "2026-10-05T06:20:01.457Z",
+      "type": "INFO",
+      "message": "Scanning global wire feeds and Google Trends..."
+    },
+    {
+      "timestamp": "2026-10-05T03:36:45.188Z",
+      "type": "WARNING",
+      "message": "No new uncurated wire stories found in current sweep."
+    },
+    {
+      "timestamp": "2026-10-05T03:36:44.173Z",
+      "type": "INFO",
+      "message": "Scanning global wire feeds and Google Trends..."
+    },
+    {
+      "timestamp": "2026-10-04T20:00:07.168Z",
+      "type": "WARNING",
+      "message": "No new uncurated wire stories found in current sweep."
+    },
+    {
+      "timestamp": "2026-10-04T20:00:06.925Z",
+      "type": "INFO",
+      "message": "Scanning global wire feeds and Google Trends..."
+    },
+    {
+      "timestamp": "2026-10-04T17:00:06.851Z",
+      "type": "SYSTEM",
+      "message": "Background AI Wire Agent started. Scheduled: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-04T16:40:27.082Z",
+      "type": "SYSTEM",
+      "message": "Background AI News Agent started. Schedule: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-04T16:37:49.468Z",
+      "type": "SYSTEM",
+      "message": "Background AI News Agent started. Schedule: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-04T16:30:26.589Z",
+      "type": "PUBLISHED",
+      "message": "Successfully published story ID: art-auto-1791131426579 (\"US marine arrested in Japan on suspicion of killing woman, police say\")"
+    },
+    {
+      "timestamp": "2026-10-04T16:30:26.424Z",
+      "type": "AI_WRITER",
+      "message": "Drafting complete editorial article using built-in engine..."
+    },
+    {
+      "timestamp": "2026-10-04T16:30:26.422Z",
+      "type": "DISCOVERY",
+      "message": "Selected trending story: \"US marine arrested in Japan on suspicion of killing woman, police say\" [World] from The Guardian"
+    },
+    {
+      "timestamp": "2026-10-04T16:30:17.858Z",
+      "type": "INFO",
+      "message": "Initiating automated news wire sweep..."
+    },
+    {
+      "timestamp": "2026-10-04T16:23:35.003Z",
+      "type": "SYSTEM",
+      "message": "Background AI News Agent started. Schedule: every 3 hours."
+    },
+    {
+      "timestamp": "2026-10-04T16:19:13.273Z",
+      "type": "PUBLISHED",
+      "message": "Successfully published story ID: art-auto-1791130753263 (\"Apple weekend deals: AirPods Pro 3 $179, MacBook Pro $500 off, AirTag 2, Prime Day HomeKit discounts, more\")"
+    },
+    {
+      "timestamp": "2026-10-04T16:19:13.210Z",
+      "type": "AI_WRITER",
+      "message": "Drafting complete editorial article using built-in engine..."
+    },
+    {
+      "timestamp": "2026-10-04T16:19:13.208Z",
+      "type": "DISCOVERY",
+      "message": "Selected trending story: \"Apple weekend deals: AirPods Pro 3 $179, MacBook Pro $500 off, AirTag 2, Prime Day HomeKit discounts, more\" [Technology] from 9to5Mac"
+    },
+    {
+      "timestamp": "2026-10-04T16:19:02.200Z",
+      "type": "INFO",
+      "message": "Initiating automated news wire sweep..."
+    },
+    {
+      "timestamp": "2026-10-04T16:17:19.557Z",
+      "type": "PUBLISHED",
+      "message": "Successfully published story ID: art-auto-1791130639541 (\"U.S. Marine arrested on suspicion of killing Japanese woman in Okinawa\")"
+    },
+    {
+      "timestamp": "2026-10-04T16:17:19.321Z",
+      "type": "AI_WRITER",
+      "message": "Drafting complete editorial article using built-in engine..."
+    },
+    {
+      "timestamp": "2026-10-04T16:17:19.317Z",
+      "type": "DISCOVERY",
+      "message": "Selected trending story: \"U.S. Marine arrested on suspicion of killing Japanese woman in Okinawa\" [World] from NBC News"
+    },
+    {
+      "timestamp": "2026-10-04T16:17:09.368Z",
+      "type": "INFO",
+      "message": "Initiating automated news wire sweep..."
+    },
+    {
+      "timestamp": "2026-10-04T21:40:00.000Z",
+      "type": "SYSTEM",
+      "message": "AI Autonomous News Agent initialized. Ready to scan global wires."
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+/* Broadsheet Newspaper Theme (Inspired by NY Times, The Guardian, WSJ) */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --newsprint-bg: #f8f6f0;
+  --newsprint-card: #ffffff;
+  --ink-primary: #121212;
+  --ink-secondary: #383838;
+  --ink-muted: #6b6b6b;
+  --rule-border: #d8d3c5;
+  --rule-dark: #121212;
+  --accent-burgundy: #8a151b;
+  --accent-gold: #c59b27;
+}
+
+/* Light / Newsprint Theme (Default broadsheet) */
+body {
+  background-color: var(--newsprint-bg);
+  color: var(--ink-primary);
+  font-family: 'Newsreader', 'Georgia', serif;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Dark Newsprint mode */
+.dark body {
+  background-color: #141413;
+  color: #ede9df;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0);
+}
+
+.dark {
+  --newsprint-bg: #141413;
+  --newsprint-card: #1c1c1a;
+  --ink-primary: #ede9df;
+  --ink-secondary: #c4bfb3;
+  --ink-muted: #8c877c;
+  --rule-border: #2e2e2a;
+  --rule-dark: #ede9df;
+  --accent-burgundy: #d94b52;
+}
+
+/* Broadsheet Masthead Font */
+.font-masthead {
+  font-family: 'Cinzel Decorative', 'Playfair Display', 'Georgia', serif;
+  letter-spacing: -0.01em;
+}
+
+/* Headline Font */
+.font-headline {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  letter-spacing: -0.02em;
+}
+
+/* Editorial Body Copy */
+.font-body {
+  font-family: 'Newsreader', 'Georgia', serif;
+}
+
+/* Monospace for ticker & dates */
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Authentic Newspaper Drop Cap */
+.drop-cap::first-letter {
+  float: left;
+  font-family: 'Playfair Display', serif;
+  font-size: 4.8rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 12px;
+  padding-bottom: 2px;
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+
+/* Double horizontal rule divider like classic broadsheets */
+.border-double-broadsheet {
+  border-top: 3px double var(--rule-border);
+}
+
+.border-thick-thin {
+  border-top: 4px solid var(--rule-dark);
+  border-bottom: 1px solid var(--rule-dark);
+  padding: 3px 0;
+}
+
+/* Column divider borders */
+.newspaper-col-border {
+  border-right: 1px solid var(--rule-border);
+}
+
+/* Card hover */
+.media-card-img {
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: contrast(1.05) saturate(0.95);
+}
+
+.group:hover .media-card-img {
+  transform: scale(1.03);
+}
+
+/* Marquee / Ticker Animation */
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--newsprint-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #bbb6a8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8e897a;
+}
+
+/* Pulse animation */
+@keyframes live-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(185, 28, 28, 0.7); }
+  70% { box-shadow: 0 0 0 7px rgba(185, 28, 28, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(185, 28, 28, 0); }
+}
+
+.live-dot {
+  animation: live-pulse 2s infinite;
+}
